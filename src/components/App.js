@@ -11,9 +11,9 @@ function App() {
         <div className="app">
             <Header/>
             <Carousel/>
-            <Container>
+            <Container className='w-50'>
                 <div className="jumbotron jumbotron-fluid text-light my-5">
-                    <div className="container">
+                    <div>
                         <h1 className="display-4 ">Welcome</h1>
                         <p className="lead">
                             Where do we work and where are our offices located.
@@ -23,7 +23,7 @@ function App() {
                 <Cards/>
                 <hr className="my-5 text-light "/>
                 <div className="jumbotron jumbotron-fluid text-light my-3">
-                    <div className="container">
+                    <div>
                         <h1 className="display-4 ">Contact Us</h1>
                         <p className="lead">
                             This is a modified jumbotron that occupies the entire horizontal
