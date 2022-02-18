@@ -1,98 +1,57 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import {useState} from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { setLocale } from "yup";
+import { Button } from "react-bootstrap";
+
+setLocale({
+  mixed: {
+    default: "field_invalid",
+  },
+  number: {
+    min: ({ min }) => ({ key: "field_too_short", values: { min } }),
+    max: ({ max }) => ({ key: "field_too_big", values: { max } }),
+  },
+});
+
+let schema = yup.object().shape({
+  email: yup.string().email().required(),
+  name: yup.string(),
+  message: yup.string().min(20).max(300),
+});
 
 function Form() {
-    const [email, setEmail] = useState("");
-    const [message, setMessage] = useState("");
-
-    const [emailErr, setEmailErr] = useState({});
-    const [messageErr, setMessageErr] = useState({});
-
-    const onSubmit = (e) => {
-        e.preventDefault();
-        const isValid = formValidation();
-    };
-
-    const formValidation = () => {
-        const emailErr = {};
-        const messageErr = {};
-        let isValid = true;
-
-        if (email.trim().length < 5) {
-            emailErr.emailShort = "Email is too short!";
-            isValid = false;
-        }
-
-        if (!email.includes("@")) {
-            emailErr.emailAt = "Email must include the '@' symbol! ";
-            isValid = false;
-        }
-
-        if (message.trim().length < 12) {
-            messageErr.messageShort = "Your message is too short!";
-            isValid = false;
-        }
-
-        if (message.trim().length > 300) {
-            messageErr.messageLong = "Your message is too long!";
-            isValid = false;
-        }
-
-        if (isValid) {
-            alert("Sent!");
-        }
-
-        setEmailErr(emailErr);
-        setMessageErr(messageErr);
-        return isValid;
-    };
-
-    return (
-        <div className="form">
-            <form noValidate className="w-25" onSubmit={onSubmit}>
-                <div className="form-group mb-3">
-                    <label htmlFor="exampleInputEmail1">Email address</label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="Enter email"
-                        value={email}
-                        onChange={(e) => {
-                            setEmail(e.target.value);
-                        }}
-                    />
-                    <small id="emailHelp" className="form-text text-muted">
-                        We'll never share your email with anyone else.
-                    </small>
-                </div>
-                {Object.keys(emailErr).map((key) => {
-                    return <div className="text-danger mb-3">{emailErr[key]}</div>;
-                })}
-                <div className="form-group">
-          <textarea
-              rows="10"
-              cols="55"
-              className="p-2"
-              id="exampleInputText"
-              aria-describedby="Text"
-              placeholder="Enter text"
-              value={message}
-              onChange={(e) => {
-                  setMessage(e.target.value);
-              }}
-          />
-                </div>
-                {Object.keys(messageErr).map((key) => {
-                    return <div className="text-danger my-2">{messageErr[key]}</div>;
-                })}
-                <button type="submit" className="btn btn-primary mt-3">
-                    Submit
-                </button>
-            </form>
-        </div>
-    );
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const onSubmit = (data) => console.log(data);
+  console.log("hi");
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="text-light">
+      <div className="my-1">Email</div>
+      <input {...register("email")} />
+      <p className="text-danger my-1">{errors.email?.message}</p>
+      <div className="my-1">Name</div>
+      <input {...register("name")} />
+      <p className="text-danger my-1">{errors.name?.message}</p>
+      <div className="my-1">Message</div>
+      <input {...register("message")} />
+      <p className="text-danger my-1">{errors.message?.message}</p>
+      <Button
+        type="submit"
+        variant="secondary"
+        size="lg"
+        className="bg-danger my-3"
+      >
+        Send
+      </Button>
+    </form>
+  );
 }
 
 export default Form;
