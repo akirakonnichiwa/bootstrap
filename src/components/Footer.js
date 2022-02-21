@@ -13,8 +13,10 @@ function Footer() {
                             alt="login"
                         />
                     </Navbar.Brand>
-                    <Nav className="me-auto mt-2">
-                        <Nav.Link href="#home"><h6>2022 ALL RIGHTS RESERVED</h6></Nav.Link>
+                    <Nav className="me-auto mt-3">
+                        <Nav.Link href="#home">
+                            <p>2022 ALL RIGHTS RESERVED</p>
+                        </Nav.Link>
                     </Nav>
                     <Nav>
                         <Nav.Link href="#deets">More</Nav.Link>

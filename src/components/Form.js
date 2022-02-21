@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { setLocale } from "yup";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 setLocale({
   mixed: {
@@ -21,7 +21,7 @@ let schema = yup.object().shape({
   message: yup.string().min(20).max(300),
 });
 
-function Form() {
+function Forms() {
   const {
     register,
     handleSubmit,
@@ -30,28 +30,30 @@ function Form() {
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => console.log(data);
-  console.log("hi");
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="text-light">
-      <div className="my-1">Email</div>
-      <input {...register("email")} />
-      <p className="text-danger my-1">{errors.email?.message}</p>
-      <div className="my-1">Name</div>
-      <input {...register("name")} />
-      <p className="text-danger my-1">{errors.name?.message}</p>
-      <div className="my-1">Message</div>
-      <input {...register("message")} />
-      <p className="text-danger my-1">{errors.message?.message}</p>
-      <Button
-        type="submit"
-        variant="secondary"
-        size="lg"
-        className="bg-danger my-3"
-      >
-        Send
-      </Button>
+    <form onSubmit={handleSubmit(onSubmit)} className="text-light mt-4 w-50">
+      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+        <Form.Label className="my-1">Email</Form.Label>
+        <Form.Control {...register("email")} />
+        <p className="text-danger my-1">{errors.email?.message}</p>
+        <Form.Label className="my-1">Name</Form.Label>
+        <Form.Control {...register("name")} />
+        <p className="text-danger my-1">{errors.name?.message}</p>
+        <Form.Label className="my-1">Message</Form.Label>
+        <textarea className="form-control" rows="5" {...register("message")} />
+        <p className="text-danger my-1">{errors.message?.message}</p>
+        <Button
+          type="submit"
+          variant="secondary"
+          size="lg"
+          className="bg-danger my-3"
+        >
+          Send
+        </Button>
+      </Form.Group>
     </form>
   );
 }
 
-export default Form;
+export default Forms;
